@@ -1,0 +1,126 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Desafio da Senha</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <main class="login-container">
+        <section class="login-card" aria-labelledby="titulo-principal">
+            <div class="logo" aria-hidden="true">✦</div>
+
+            <h1 id="titulo-principal">Desafio da senha</h1>
+
+            <p class="subtitle">
+                Será que você consegue cumprir tudo? 😈
+            </p>
+
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="seu@email.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div
+                    id="cronometro"
+                    class="cronometro"
+                    role="timer"
+                    aria-live="off"
+                >
+                    ⏳ Tempo restante:
+                    <span id="tempo">60</span>s
+                </div>
+
+                <div class="input-group">
+                    <label for="senha">Crie sua senha</label>
+
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="senha"
+                            name="senha"
+                            placeholder="Digite sua senha..."
+                            autocomplete="off"
+                            aria-describedby="contador-caracteres"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="toggle-senha"
+                            aria-label="Mostrar senha"
+                            aria-controls="senha"
+                        >
+                            Mostrar
+                        </button>
+                    </div>
+
+                    <p
+                        id="contador-caracteres"
+                        class="contador-caracteres"
+                        aria-live="polite"
+                    >
+                        0 caracteres
+                    </p>
+                </div>
+
+                <div class="progress-info">
+                    <span id="contador">0 de 16 regras cumpridas</span>
+                    <span id="porcentagem">0%</span>
+                </div>
+
+                <div
+                    class="progress-bar"
+                    role="progressbar"
+                    aria-label="Progresso das regras da senha"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                >
+                    <div id="progresso"></div>
+                </div>
+
+                <ul
+                    id="lista-regras"
+                    class="lista-regras"
+                    aria-live="polite"
+                    aria-atomic="true"
+                ></ul>
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="entrar"
+                    disabled
+                >
+                    Cumprir todas as regras
+                </button>
+
+                <p
+                    id="mensagem"
+                    class="message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
+
