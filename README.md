@@ -6,9 +6,7 @@ Um jogo de validação de senhas em que você precisa cumprir 16 regras antes qu
 
 ## 🌐 Acesse o jogo
 
-**Jogue online:** https://SEU-USUARIO.github.io/desafio-da-senha/
-
-> Substitua `SEU-USUARIO` pelo seu nome de usuário do GitHub após publicar o site.
+**Jogue online:** https://jphs682.github.io/desafio/
 
 ## 🎮 Funcionalidades
 
