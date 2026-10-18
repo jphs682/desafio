@@ -1,126 +1,137 @@
 
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Desafio da Senha</title>
+        <meta
+            name="description"
+            content="Cumpra 16 regras antes que o tempo acabe."
+        >
 
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-</head>
+        <title>Desafio da Senha 🔐</title>
 
-<body>
-    <main class="login-container">
-        <section class="login-card" aria-labelledby="titulo-principal">
-            <div class="logo" aria-hidden="true">✦</div>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+    </head>
 
-            <h1 id="titulo-principal">Desafio da senha</h1>
+    <body>
+        <main class="page">
+            <section class="card" id="cartao">
+                <p class="eyebrow">UM DESAFIO DE LÓGICA</p>
 
-            <p class="subtitle">
-                Será que você consegue cumprir tudo? 😈
-            </p>
+                <h1>🔐 Desafio da Senha</h1>
 
-            <form id="login-form">
-                <div class="input-group">
+                <p class="intro">
+                    Cumpra as 16 regras antes que o cronômetro chegue a zero!
+                </p>
+
+                <div
+                    class="timer"
+                    id="cronometro"
+                    aria-live="polite"
+                >
+                    <span>⏱️ Tempo restante</span>
+
+                    <strong>
+                        <span id="tempo">60</span>s
+                    </strong>
+                </div>
+
+                <form id="login-form" novalidate>
                     <label for="email">E-mail</label>
 
                     <input
-                        type="email"
                         id="email"
-                        name="email"
-                        placeholder="seu@email.com"
+                        type="email"
                         autocomplete="email"
+                        placeholder="voce@exemplo.com"
                         required
                     >
-                </div>
 
-                <div
-                    id="cronometro"
-                    class="cronometro"
-                    role="timer"
-                    aria-live="off"
-                >
-                    ⏳ Tempo restante:
-                    <span id="tempo">60</span>s
-                </div>
+                    <label for="senha">Senha-desafio</label>
 
-                <div class="input-group">
-                    <label for="senha">Crie sua senha</label>
-
-                    <div class="password-wrapper">
+                    <div class="password-row">
                         <input
-                            type="password"
                             id="senha"
-                            name="senha"
-                            placeholder="Digite sua senha..."
+                            type="password"
                             autocomplete="off"
-                            aria-describedby="contador-caracteres"
+                            placeholder="Crie uma senha impossível..."
                             required
                         >
 
                         <button
-                            type="button"
+                            class="toggle"
                             id="toggle-senha"
-                            aria-label="Mostrar senha"
-                            aria-controls="senha"
+                            type="button"
                         >
                             Mostrar
                         </button>
                     </div>
 
-                    <p
-                        id="contador-caracteres"
-                        class="contador-caracteres"
-                        aria-live="polite"
+                    <div class="stats">
+                        <span id="contador-caracteres">
+                            0 caracteres visuais
+                        </span>
+
+                        <span id="contador">
+                            0 de 16 regras
+                        </span>
+                    </div>
+
+                    <div
+                        class="progress-track"
+                        id="trilho-progresso"
+                        role="progressbar"
+                        aria-label="Progresso"
+                        aria-valuemin="0"
+                        aria-valuemax="16"
+                        aria-valuenow="0"
                     >
-                        0 caracteres
+                        <div
+                            class="progress"
+                            id="progresso"
+                        ></div>
+                    </div>
+
+                    <p class="percentage" id="porcentagem">
+                        0%
                     </p>
-                </div>
 
-                <div class="progress-info">
-                    <span id="contador">0 de 16 regras cumpridas</span>
-                    <span id="porcentagem">0%</span>
-                </div>
+                    <section class="rules-panel">
+                        <h2>Sua missão</h2>
 
-                <div
-                    class="progress-bar"
-                    role="progressbar"
-                    aria-label="Progresso das regras da senha"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    aria-valuenow="0"
-                >
-                    <div id="progresso"></div>
-                </div>
+                        <p class="rules-hint">
+                            A lista mostra a primeira regra que falta cumprir.
+                        </p>
 
-                <ul
-                    id="lista-regras"
-                    class="lista-regras"
-                    aria-live="polite"
-                    aria-atomic="true"
-                ></ul>
+                        <ul id="lista-regras">
+                            <li>Digite uma senha para começar.</li>
+                        </ul>
+                    </section>
 
-                <button
-                    type="submit"
-                    class="login-button"
-                    id="entrar"
-                    disabled
-                >
-                    Cumprir todas as regras
-                </button>
+                    <p
+                        id="mensagem"
+                        class="message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
 
-                <p
-                    id="mensagem"
-                    class="message"
-                    role="status"
-                    aria-live="polite"
-                ></p>
-            </form>
-        </section>
-    </main>
-</body>
+                    <button
+                        class="submit"
+                        id="entrar"
+                        type="submit"
+                        disabled
+                    >
+                        Vencer o desafio
+                    </button>
+                </form>
+
+                <p class="footnote">
+                    É um jogo: não use sua senha real nem dados pessoais.
+                </p>
+            </section>
+        </main>
+    </body>
 </html>
-
