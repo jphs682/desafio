@@ -1,5 +1,3 @@
-
-
 # 🔐 Desafio da Senha
 
 Um jogo de validação de senhas em que você precisa cumprir 16 regras antes que o cronômetro de 60 segundos chegue a zero!
@@ -8,101 +6,54 @@ Um jogo de validação de senhas em que você precisa cumprir 16 regras antes qu
 
 **Jogue online:** https://jphs682.github.io/desafio/
 
-## 🎮 Funcionalidades
+## Funcionalidades
 
-- 📧 Campo de e-mail e senha
-- 👁️ Mostrar ou ocultar a senha
-- ✅ 16 regras com validação em tempo real
-- 📊 Barra de progresso das regras
-- 🔢 Contador de caracteres
-- ⏱️ Cronômetro de 60 segundos
-- 🚨 Alertas visuais quando o tempo está acabando
-- 🎉 Animação de vitória com confetes
-- 🔄 Opção para tentar novamente após o tempo acabar
-- 📱 Layout responsivo para diferentes telas
+- 16 regras validadas em tempo real
+- Cronômetro de 60 segundos, iniciado ao focar a senha
+- Contagem visual de caracteres, incluindo emojis e bandeiras
+- Colagem de texto e emojis permitida
+- Barra de progresso e regra pendente
+- Mostrar/ocultar senha
+- Confetes ao vencer e opção de tentar novamente após o tempo acabar
+- Layout responsivo
 
-## 📋 As 16 regras
+## As 16 regras
 
-1. A senha deve ter pelo menos 5 caracteres.
-2. Deve conter um número.
-3. Deve conter uma letra maiúscula.
-4. Deve conter um emoji.
-5. Deve conter o dia atual em números romanos.
-6. Deve conter `3.14`.
-7. Deve conter o emoji `☝️`.
-8. Deve conter `2026`.
-9. Não pode conter o emoji `🖕`.
-10. A bandeira dos Países Baixos 🇳🇱 deve estar na quinta posição visual.
-11. Deve conter todas as vogais maiúsculas: `A E I O U`.
-12. Deve conter `+55`.
-13. Deve conter um feitiço de Harry Potter.
-14. Deve conter uma versão do Android aceita pelo jogo.
-15. Deve conter um número igual ao comprimento atual da senha.
-16. Deve ter menos de 40 caracteres visuais.
+1. Pelo menos 5 caracteres visuais.
+2. Pelo menos um número.
+3. Pelo menos uma letra maiúscula.
+4. Pelo menos um emoji.
+5. Dia local atual em algarismos romanos.
+6. O texto `3.14`.
+7. O emoji `☝️`.
+8. Ano local atual.
+9. Não conter `🖕`.
+10. A bandeira 🇳🇱 começa na quinta posição visual.
+11. Conter `A`, `E`, `I`, `O` e `U`.
+12. Conter `+55`.
+13. Um feitiço da lista: `Expelliarmus`, `Lumos`, `Nox`, `Alohomora`, `Expecto Patronum`, `Wingardium Leviosa`, `Accio`, `Aparecium` ou `Riddikulus`.
+14. `Android 14`, `Android 15` ou `Android 16`.
+15. Um número igual ao comprimento visual atual da senha.
+16. Menos de 40 caracteres visuais.
 
-## 🛠️ Tecnologias utilizadas
+## Tecnologias
 
-- HTML5
-- CSS3
-- JavaScript puro (Vanilla JS)
+HTML5, CSS3 e JavaScript puro. Nenhuma dependência de build.
 
-Nenhum framework é necessário.
+## Executar localmente
 
-## 📂 Estrutura do projeto
+Abra `index.html` no navegador ou use Live Server no Visual Studio Code.
 
-```text
-desafio-da-senha/
-├── index.html
-├── style.css
-├── script.js
-└── README.md
-```
+## Publicar com GitHub Pages
 
-## 🚀 Como executar localmente
-
-1. Clone este repositório:
-
-   ```bash
-   git clone https://github.com/jphs682/desafio.git
-   ```
-
-2. Entre na pasta:
-
-   ```bash
-   cd desafio-da-senha
-   ```
-
-3. Abra o arquivo `index.html` no navegador.
-
-Você também pode usar a extensão **Live Server** no Visual Studio Code.
-
-## 📦 Publicação com GitHub Pages
-
-Este projeto pode ser hospedado gratuitamente pelo GitHub Pages.
-
-1. Acesse o repositório no GitHub.
-2. Entre em **Settings → Pages**.
-3. Em **Build and deployment**, escolha `Deploy from a branch`.
-4. Selecione a branch `main` e a pasta `/ (root)`.
-5. Clique em **Save**.
-6. Aguarde a publicação do site.
-
-O endereço ficará neste formato:
-
-`https://SEU-USUARIO.github.io/desafio-da-senha/`
-
-## 🎯 Objetivo
-
-Projeto desenvolvido para praticar lógica de programação, manipulação do DOM, validações com JavaScript, expressões regulares, temporizadores e estilização com CSS.
-
-## ⚠️ Aviso
-
-Este projeto é um jogo educativo. O formulário não implementa autenticação real nem deve ser usado para armazenar senhas verdadeiras.
-
-## 📄 Licença
-
-Este projeto pode utilizar a licença MIT. Para isso, adicione um arquivo `LICENSE` com o texto correspondente.
+1. Envie `index.html`, `style.css`, `script.js` e `README.md` para a raiz do repositório.
+2. Abra **Settings → Pages**.
+3. Escolha **Deploy from a branch**, branch `main`, pasta `/ (root)`.
+4. Clique em **Save** e aguarde a publicação.
 
 ---
+<div >
+## Aviso
 
 Feito com 💙, JavaScript e uma boa dose de dificuldade. 😈
+</div>
