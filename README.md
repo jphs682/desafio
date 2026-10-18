@@ -35,7 +35,9 @@ Abra `index.html` no navegador ou use Live Server no Visual Studio Code.
 4. Clique em **Save** e aguarde a publicação.
 
 ---
-<div text-aline;center>
+
+<div align="center">
+  
 ## Aviso
 
 Feito com 💙, JavaScript e uma boa dose de dificuldade. 😈
