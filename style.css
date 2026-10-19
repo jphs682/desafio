@@ -5,40 +5,13 @@ button,input{font:inherit}.page{min-height:100vh;display:grid;place-items:center
 .eyebrow{margin:0 0 10px;color:var(--cyan);font-size:.75rem;font-weight:800;letter-spacing:.16em}h1{margin:0;font-size:clamp(1.8rem,5vw,2.5rem);letter-spacing:-.04em}.intro{margin:12px 0 24px;color:var(--muted);line-height:1.6}
 .timer{display:flex;justify-content:space-between;align-items:center;padding:14px 17px;margin-bottom:24px;border:1px solid var(--border);border-radius:14px;background:var(--panel)}.timer span{color:var(--muted)}.timer strong{font-size:1.4rem;color:var(--cyan);font-variant-numeric:tabular-nums}.timer.urgente{border-color:var(--danger);animation:pulse 1s infinite alternate}.timer.urgente strong{color:var(--danger)}
 label{display:block;margin:16px 0 8px;font-size:.9rem;font-weight:700}input{width:100%;min-width:0;padding:13px 14px;color:var(--text);border:1px solid var(--border);border-radius:11px;outline:none;background:#0c1325}input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #22d3ee22}.password-row{display:flex;gap:8px}.password-row input{flex:1}.toggle{border:1px solid var(--border);border-radius:11px;padding:0 14px;color:var(--text);background:#222b43;cursor:pointer}
+/* type=text permite que o teclado móvel ofereça recursos de texto; a ocultação é apenas visual. */
+#senha.senha-oculta{-webkit-text-security:disc;text-security:disc}
 .stats{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:15px 0 9px;color:var(--muted);font-size:.82rem}.progress-track{height:9px;overflow:hidden;border-radius:999px;background:#303a55}.progress{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--cyan));transition:width .2s}.percentage{margin:7px 0 20px;text-align:right;color:var(--cyan);font-size:.85rem;font-weight:800}
 .rules-panel{padding:17px;border:1px solid var(--border);border-radius:14px;background:var(--panel)}.rules-panel h2{margin:0 0 6px;font-size:1rem}.rules-hint{margin:0 0 12px;color:var(--muted);font-size:.82rem;line-height:1.5}#lista-regras{margin:0;padding-left:22px}#lista-regras li{padding:4px 0;line-height:1.55}#lista-regras .regra-atual{color:#fbbf24;font-weight:700}#lista-regras .cumprida{color:var(--good)}
 .message{min-height:24px;margin:15px 0 10px;font-weight:700;line-height:1.5}.submit{width:100%;padding:14px 18px;border:0;border-radius:12px;color:white;font-weight:800;background:linear-gradient(100deg,#7c3aed,#2563eb);cursor:pointer}.submit:not(:disabled):hover{transform:translateY(-1px)}.submit + .submit{margin-top:5px}button:disabled{cursor:not-allowed;opacity:.45}.footnote{margin:18px 0 0;text-align:center;color:var(--muted);font-size:.75rem;line-height:1.5}.card.vitoria{border-color:var(--good);box-shadow:0 0 0 2px #34d39922,0 24px 80px #0008}.card.derrota{border-color:var(--danger)}
 .confete{position:fixed;top:-16px;z-index:10;width:9px;height:14px;pointer-events:none;animation:cair var(--duracao,3s) linear forwards}@keyframes cair{to{transform:translate3d(var(--deslocamento,60px),110vh,0) rotate(720deg);opacity:.85}}@keyframes pulse{to{box-shadow:0 0 18px #fb718544}}
-/* Responsividade: celular, tablet e telas largas */
-@media (max-width: 640px) {
-  .page { padding: 16px 10px; align-items: start; }
-  .card { width: 100%; padding: 20px 16px; border-radius: 18px; }
-  h1 { font-size: clamp(1.55rem, 7vw, 2.1rem); line-height: 1.15; }
-  .intro { margin-bottom: 18px; }
-  .timer { gap: 10px; padding: 12px; }
-  .timer strong { font-size: 1.2rem; white-space: nowrap; }
-  .stats { align-items: flex-start; font-size: .78rem; }
-  .stats span { max-width: 100%; overflow-wrap: anywhere; }
-  .rules-panel { padding: 14px; }
-  #lista-regras { padding-left: 20px; }
-  #lista-regras li { overflow-wrap: anywhere; }
-  .password-row { align-items: stretch; }
-  .password-row input { width: 0; flex: 1 1 0; }
-  .password-row .toggle { min-height: 44px; padding: 0 12px; }
-  input, button { min-height: 44px; }
-}
-@media (max-width: 380px) {
-  .page { padding: 10px 7px; }
-  .card { padding: 17px 12px; }
-  .eyebrow { font-size: .67rem; }
-  .timer { align-items: flex-start; flex-direction: column; }
-  .password-row { flex-wrap: wrap; }
-  .password-row input { flex-basis: 100%; width: 100%; }
-  .password-row .toggle { width: 100%; }
-  .stats { flex-direction: column; gap: 5px; }
-}
-@media (min-width: 641px) and (max-width: 900px) {
-  .page { padding: 24px 18px; }
-  .card { width: min(100%, 620px); }
-}
+@media (max-width:640px){.page{padding:16px 10px;align-items:start}.card{width:100%;padding:20px 16px;border-radius:18px}h1{font-size:clamp(1.55rem,7vw,2.1rem);line-height:1.15}.intro{margin-bottom:18px}.timer{gap:10px;padding:12px}.timer strong{font-size:1.2rem;white-space:nowrap}.stats{align-items:flex-start;font-size:.78rem}.stats span{max-width:100%;overflow-wrap:anywhere}.rules-panel{padding:14px}#lista-regras{padding-left:20px}#lista-regras li{overflow-wrap:anywhere}.password-row{align-items:stretch}.password-row input{width:0;flex:1 1 0}.password-row .toggle{min-height:44px;padding:0 12px}input,button{min-height:44px}}
+@media (max-width:380px){.page{padding:10px 7px}.card{padding:17px 12px}.eyebrow{font-size:.67rem}.timer{align-items:flex-start;flex-direction:column}.password-row{flex-wrap:wrap}.password-row input{flex-basis:100%;width:100%}.password-row .toggle{width:100%}.stats{flex-direction:column;gap:5px}}
+@media (min-width:641px) and (max-width:900px){.page{padding:24px 18px}.card{width:min(100%,620px)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
