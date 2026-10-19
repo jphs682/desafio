@@ -1,21 +1,37 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Cumpra 16 regras antes que o tempo acabe.">
-<title>Desafio da Senha 🔐</title><link rel="stylesheet" href="style.css">
+<title>Desafio da Senha 🔐</title>
+<link rel="stylesheet" href="style.css">
 <script src="script.js" defer></script>
 </head>
-<body><main class="page"><section class="card" id="cartao">
-<p class="eyebrow">UM DESAFIO DE LÓGICA</p><h1>🔐 Desafio da Senha</h1>
+<body>
+<main class="page">
+<section class="card" id="cartao">
+<p class="eyebrow">UM DESAFIO DE LÓGICA</p>
+<h1>🔐 Desafio da Senha</h1>
 <p class="intro">Cumpra as 16 regras antes que o cronômetro chegue a zero!</p>
 <div class="timer" id="cronometro" aria-live="polite"><span>⏱️ Tempo restante</span><strong><span id="tempo">60</span>s</strong></div>
 <form id="login-form" novalidate>
-<label for="email">E-mail</label><input id="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
-<label for="senha">Senha-desafio</label><div class="password-row"><input id="senha" type="password" autocomplete="off" placeholder="Crie uma senha impossível..." required><button class="toggle" id="toggle-senha" type="button">Mostrar</button></div>
+<label for="email">E-mail</label>
+<input id="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
+<label for="senha">Senha-desafio</label>
+<div class="password-row">
+<input id="senha" class="senha-oculta" type="text" inputmode="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Crie uma senha impossível..." aria-label="Senha-desafio" required>
+<button class="toggle" id="toggle-senha" type="button" aria-label="Mostrar senha" aria-controls="senha">Mostrar</button>
+</div>
 <div class="stats"><span id="contador-caracteres">0 caracteres visuais</span><span id="contador">0 de 16 regras</span></div>
-<div class="progress-track" id="trilho-progresso" role="progressbar" aria-label="Progresso" aria-valuemin="0" aria-valuemax="16" aria-valuenow="0"><div class="progress" id="progresso"></div></div><p class="percentage" id="porcentagem">0%</p>
+<div class="progress-track" id="trilho-progresso" role="progressbar" aria-label="Progresso" aria-valuemin="0" aria-valuemax="16" aria-valuenow="0"><div class="progress" id="progresso"></div></div>
+<p class="percentage" id="porcentagem">0%</p>
 <section class="rules-panel"><h2>Sua missão</h2><p class="rules-hint">A lista mostra a primeira regra que falta cumprir.</p><ul id="lista-regras"><li>Digite uma senha para começar.</li></ul></section>
-<p id="mensagem" class="message" role="status" aria-live="polite"></p><button class="submit" id="entrar" type="submit" disabled>Vencer o desafio</button>
-</form><p class="footnote">É um jogo: não use sua senha real nem dados pessoais.</p>
-</section></main></body></html>
+<p id="mensagem" class="message" role="status" aria-live="polite"></p>
+<button class="submit" id="entrar" type="submit" disabled>Vencer o desafio</button>
+</form>
+<p class="footnote">É um jogo: não use sua senha real nem dados pessoais.</p>
+</section>
+</main>
+</body>
+</html>
