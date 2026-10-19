@@ -407,7 +407,7 @@
         senha.disabled = false;
         toggle.disabled = false;
 
-        senha.type = "password";
+        senha.classList.add("senha-oculta");
         toggle.textContent = "Mostrar";
         toggle.setAttribute("aria-label", "Mostrar senha");
 
@@ -429,9 +429,9 @@
     }
 
     toggle.addEventListener("click", () => {
-        const mostrar = senha.type === "password";
+        const mostrar = senha.classList.contains("senha-oculta");
 
-        senha.type = mostrar ? "text" : "password";
+        senha.classList.toggle("senha-oculta", !mostrar);
         toggle.textContent = mostrar ? "Ocultar" : "Mostrar";
 
         toggle.setAttribute(
