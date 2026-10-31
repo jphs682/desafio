@@ -33,7 +33,7 @@ Abra `index.html` no navegador ou use Live Server no Visual Studio Code.
 1. Mantenha `index.html`, `style.css`, `script.js` e `README.md` na raiz do repositório.
 2. Abra **Settings → Pages**.
 3. Escolha **Deploy from a branch**, branch `main`, pasta `/(root)`.
-4. Clique em **Save` e aguarde a publicação.
+4. Clique em **Save** e aguarde a publicação.
 
 ## Privacidade
 
