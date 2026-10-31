@@ -4,13 +4,11 @@
   const CONFIG = Object.freeze({
     duracaoInicial: 60,
     bonusPorRegra: 10,
-    intervaloEmbaralhamento: 12,
     pi: "3.14",
     emojiObrigatorio: "☝️",
     emojiProibido: "🖕",
     bandeira: "🇳🇱",
     codigoTelefonico: "+55",
-    versoesAndroidAceitas: ["14", "15", "16"],
     anoPentacampeonatoBrasil: "2002",
     feiticos: [
       "Expelliarmus", "Lumos", "Nox", "Alohomora", "Expecto Patronum",
@@ -26,27 +24,20 @@
   const entrar = $("entrar");
   const botaoReiniciar = $("reiniciar");
   const lista = $("lista-regras");
-  const contador = $("contador");
   const contadorChars = $("contador-caracteres");
-  const porcentagem = $("porcentagem");
-  const progresso = $("progresso");
-  const trilho = $("trilho-progresso");
   const mensagem = $("mensagem");
   const tempoEl = $("tempo");
   const cronometro = $("cronometro");
   const cartao = $("cartao");
-  const shuffleStatus = $("shuffle-status");
 
   const estado = {
     tempoRestante: CONFIG.duracaoInicial,
     prazoFinal: null,
     intervalo: null,
-    intervaloShuffle: null,
     iniciado: false,
     vitoria: false,
     esgotado: false,
-    mensagemTemporaria: "",
-    ordemRegras: [],
+    regraAtualId: null,
     regrasPremiadas: new Set(),
     estadosAnteriores: new Map()
   };
@@ -56,7 +47,6 @@
       return [...new Intl.Segmenter("pt-BR", { granularity: "grapheme" }).segment(texto)]
         .map(item => item.segment);
     }
-    // Fallback melhor que Array.from para sequências com modificadores/ZWJ.
     return Array.from(texto);
   }
 
@@ -76,13 +66,6 @@
     return resultado;
   }
 
-  function androidValido(texto, versao) {
-    // Evita aceitar 14 dentro de 140 ou 14.5.
-    return new RegExp("(^|[^\\d])" + versao + "(?![\\d.])").test(texto);
-  }
-
-  // Cada regra tem um ID estável. A ordem de apresentação pode mudar sem
-  // perder o estado ou premiar a mesma regra duas vezes.
   function obterRegras(texto) {
     const chars = separarGraphemes(texto);
     const n = chars.length;
@@ -90,59 +73,33 @@
     const lower = texto.toLocaleLowerCase("pt-BR");
 
     return [
-      { id: "minimo", nome: "Mínimo de 5 caracteres visuais.", ok: n >= 5 },
-      { id: "numero", nome: "Precisa conter ao menos um número (0–9).", ok: /\d/.test(texto) },
-      { id: "maiuscula", nome: "Precisa conter uma letra maiúscula (A–Z).", ok: /[A-Z]/.test(texto) },
-      { id: "emoji", nome: "Precisa conter pelo menos um emoji.", ok: /\p{Extended_Pictographic}/u.test(texto) },
-      { id: "romano", nome: `Precisa conter o dia de hoje em algarismos romanos (${diaRomano}).`, ok: texto.includes(diaRomano) },
-      { id: "pi", nome: "Precisa conter os primeiros dígitos de PI: 3.14.", ok: texto.includes(CONFIG.pi) },
-      { id: "apontar", nome: "Precisa apontar para cima (☝️).", ok: texto.includes(CONFIG.emojiObrigatorio) },
-      { id: "ano", nome: `Precisa conter 2002, ano do pentacampeonato do Brasil.`, ok: texto.includes(CONFIG.anoPentacampeonatoBrasil) },
-      { id: "vogais", nome: "Precisa conter todas as vogais maiúsculas: A, E, I, O e U.", ok: ["A", "E", "I", "O", "U"].every(v => texto.includes(v)) },
-      { id: "bandeira", nome: "A bandeira 🇳🇱 deve começar na quinta posição visual.", ok: chars[4] === CONFIG.bandeira },
-      { id: "codigo", nome: `Precisa conter o código telefônico ${CONFIG.codigoTelefonico}.`, ok: texto.includes(CONFIG.codigoTelefonico) },
-      { id: "feitico", nome: "Precisa conter um feitiço conhecido de Harry Potter.", ok: CONFIG.feiticos.some(f => lower.includes(f.toLocaleLowerCase("pt-BR"))) },
-      { id: "android", nome: "Precisa conter uma versão Android aceita: 14, 15 ou 16.", ok: CONFIG.versoesAndroidAceitas.some(v => androidValido(texto, v)) },
-      { id: "contagem", nome: `Precisa conter a quantidade atual de caracteres visuais (${n}).`, ok: texto.includes(String(n)) },
-      { id: "maximo", nome: "Precisa conter menos de 40 caracteres visuais.", ok: n < 40 },
-      { id: "minuscula", nome: "Precisa conter pelo menos uma letra minúscula (a–z).", ok: /[a-z]/.test(texto) }
+      { id: "minimo", nome: "Sua senha precisa ter pelo menos 5 caracteres visuais.", ok: n >= 5 },
+      { id: "numero", nome: "Inclua pelo menos um número (0–9).", ok: /\d/.test(texto) },
+      { id: "maiuscula", nome: "Inclua uma letra maiúscula (A–Z).", ok: /[A-Z]/.test(texto) },
+      { id: "emoji", nome: "Surpresa: sua senha precisa conter um emoji.", ok: /\p{Extended_Pictographic}/u.test(texto) },
+      { id: "romano", nome: "Inclua o dia de hoje em algarismos romanos (" + diaRomano + ").", ok: texto.includes(diaRomano) },
+      { id: "pi", nome: "Os primeiros dígitos de PI precisam aparecer: 3.14.", ok: texto.includes(CONFIG.pi) },
+      { id: "apontar", nome: "Adicione o emoji que aponta para cima: ☝️.", ok: texto.includes(CONFIG.emojiObrigatorio) },
+      { id: "ano", nome: "Inclua 2002, o ano do pentacampeonato do Brasil.", ok: texto.includes(CONFIG.anoPentacampeonatoBrasil) },
+      { id: "vogais", nome: "Todas as vogais maiúsculas precisam aparecer: A, E, I, O e U.", ok: ["A", "E", "I", "O", "U"].every(v => texto.includes(v)) },
+      { id: "bandeira", nome: "A bandeira 🇳🇱 precisa começar na quinta posição visual.", ok: chars[4] === CONFIG.bandeira },
+      { id: "codigo", nome: "Inclua o código telefônico do Brasil: " + CONFIG.codigoTelefonico + ".", ok: texto.includes(CONFIG.codigoTelefonico) },
+      { id: "feitico", nome: "Inclua um feitiço conhecido de Harry Potter.", ok: CONFIG.feiticos.some(f => lower.includes(f.toLocaleLowerCase("pt-BR"))) },
+      { id: "contagem", nome: "A quantidade atual de caracteres visuais (" + n + ") precisa aparecer na senha.", ok: texto.includes(String(n)) },
+      { id: "maximo", nome: "Sua senha precisa ter menos de 40 caracteres visuais.", ok: n < 40 },
+      { id: "minuscula", nome: "Inclua pelo menos uma letra minúscula (a–z).", ok: /[a-z]/.test(texto) }
     ];
   }
 
-  function embaralhar(array) {
-    // Fisher–Yates: embaralhamento sem viés de ordenação por sort aleatório.
-    const resultado = [...array];
-    for (let i = resultado.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [resultado[i], resultado[j]] = [resultado[j], resultado[i]];
+  function escolherRegraSurpresa(regras) {
+    const pendentes = regras.filter(regra => !regra.ok);
+    if (pendentes.length === 0) {
+      estado.regraAtualId = null;
+      return;
     }
-    return resultado;
-  }
-
-  function iniciarEmbaralhamento() {
-    if (estado.intervaloShuffle !== null) return;
-    estado.intervaloShuffle = window.setInterval(() => {
-      if (estado.vitoria || estado.esgotado) return pararEmbaralhamento();
-      const ordemAnterior = estado.ordemRegras.map(r => r.id).join("|");
-      let novaOrdem = embaralhar(estado.ordemRegras);
-      // Evita repetir exatamente a mesma sequência.
-      if (novaOrdem.map(r => r.id).join("|") === ordemAnterior && novaOrdem.length > 1) {
-        novaOrdem = [...novaOrdem.slice(1), novaOrdem[0]];
-      }
-      estado.ordemRegras = novaOrdem;
-      shuffleStatus.textContent = "Ordem embaralhada!";
-      window.setTimeout(() => {
-        if (!estado.vitoria && !estado.esgotado) shuffleStatus.textContent = "Ordem dinâmica";
-      }, 1800);
-      atualizarInterface();
-    }, CONFIG.intervaloEmbaralhamento * 1000);
-  }
-
-  function pararEmbaralhamento() {
-    if (estado.intervaloShuffle !== null) {
-      window.clearInterval(estado.intervaloShuffle);
-      estado.intervaloShuffle = null;
-    }
+    let candidatas = pendentes.filter(regra => regra.id !== estado.regraAtualId);
+    if (candidatas.length === 0) candidatas = pendentes;
+    estado.regraAtualId = candidatas[Math.floor(Math.random() * candidatas.length)].id;
   }
 
   function pararCronometro() {
@@ -175,7 +132,6 @@
     estado.iniciado = true;
     estado.prazoFinal = Date.now() + estado.tempoRestante * 1000;
     estado.intervalo = window.setInterval(atualizarRelogio, 100);
-    iniciarEmbaralhamento();
   }
 
   function mostrarMensagem(texto, tipo = "normal") {
@@ -184,20 +140,24 @@
       : tipo === "sucesso" ? "var(--good)" : "var(--muted)";
   }
 
-  function renderizarRegras(regras) {
+  function renderizarRegra(regra) {
     lista.replaceChildren();
-    const primeiraPendente = estado.ordemRegras.find(regra => !regra.ok);
+    const item = document.createElement("li");
+    item.className = "regra-atual";
+    const status = document.createElement("span");
+    status.className = "rule-state";
+    status.setAttribute("aria-hidden", "true");
+    status.textContent = "✦";
+    item.append(status, document.createTextNode(regra.nome));
+    lista.append(item);
+  }
 
-    for (const regra of estado.ordemRegras) {
-      const li = document.createElement("li");
-      li.className = regra.ok ? "cumprida" : (primeiraPendente?.id === regra.id ? "regra-atual" : "");
-      const status = document.createElement("span");
-      status.className = "rule-state";
-      status.setAttribute("aria-hidden", "true");
-      status.textContent = regra.ok ? "✓" : (primeiraPendente?.id === regra.id ? "→" : "○");
-      li.append(status, document.createTextNode(regra.nome));
-      lista.append(li);
-    }
+  function renderizarConclusao() {
+    lista.replaceChildren();
+    const item = document.createElement("li");
+    item.className = "cumprida";
+    item.textContent = "✓ Todas as condições foram cumpridas! Você conseguiu!";
+    lista.append(item);
   }
 
   function atualizarInterface() {
@@ -206,17 +166,10 @@
     const regras = obterRegras(texto);
     const regrasPorId = new Map(regras.map(regra => [regra.id, regra]));
 
-    // Atualiza as regras com os resultados mais recentes, mantendo a ordem atual.
-    estado.ordemRegras = estado.ordemRegras.length
-      ? estado.ordemRegras.map(regra => regrasPorId.get(regra.id))
-      : [...regras];
-
     let novasRegras = 0;
-    const jaHaviaEstadoAnterior = estado.estadosAnteriores.size > 0;
     for (const regra of regras) {
       const anterior = estado.estadosAnteriores.get(regra.id) || false;
-      // A primeira renderização apenas estabelece a linha de base; não dá bônus.
-      if (jaHaviaEstadoAnterior && regra.ok && !anterior && !estado.regrasPremiadas.has(regra.id)) {
+      if (regra.ok && !anterior && !estado.regrasPremiadas.has(regra.id)) {
         estado.regrasPremiadas.add(regra.id);
         novasRegras++;
       }
@@ -226,37 +179,39 @@
     if (novasRegras > 0 && !estado.vitoria && !estado.esgotado) {
       const bonus = novasRegras * CONFIG.bonusPorRegra;
       adicionarTempo(bonus);
-      mostrarMensagem(`⏱️ +${bonus} segundos! ${novasRegras === 1 ? "Regra cumprida" : "Regras cumpridas"} pela primeira vez.`, "sucesso");
+      mostrarMensagem("⏱️ +" + bonus + " segundos! Boa, regra cumprida!", "sucesso");
     }
 
-    const cumpridas = regras.filter(regra => regra.ok).length;
-    const percentual = Math.round(cumpridas / regras.length * 100);
+    const tudoCerto = regras.every(regra => regra.ok);
     const emailValido = email.value.trim() !== "" && email.validity.valid;
     const proibido = texto.includes(CONFIG.emojiProibido);
-    const tudoCerto = cumpridas === regras.length;
-    const pronto = tudoCerto && emailValido && !proibido;
 
-    contadorChars.textContent = `${chars.length} caractere${chars.length === 1 ? "" : "s"} visuais`;
-    contador.textContent = `${cumpridas} de ${regras.length} regras`;
-    porcentagem.textContent = `${percentual}%`;
-    progresso.style.width = `${percentual}%`;
-    trilho.setAttribute("aria-valuenow", String(cumpridas));
+    if (!tudoCerto && !estado.vitoria && !estado.esgotado) {
+      const atual = regrasPorId.get(estado.regraAtualId);
+      if (!atual || atual.ok) escolherRegraSurpresa(regras);
+    }
 
-    renderizarRegras(regras);
-    entrar.disabled = !pronto || estado.vitoria || estado.esgotado;
+    contadorChars.textContent = chars.length + " caractere" + (chars.length === 1 ? "" : "s") + " visuais";
+    entrar.disabled = !(tudoCerto && emailValido && !proibido) || estado.vitoria || estado.esgotado;
+
+    if (tudoCerto) {
+      renderizarConclusao();
+    } else {
+      const regraAtual = regrasPorId.get(estado.regraAtualId);
+      if (regraAtual) renderizarRegra(regraAtual);
+    }
 
     if (!estado.vitoria && !estado.esgotado) {
       if (proibido) {
         mostrarMensagem("Não pode ter o dedo do meio, seu sem educação.", "erro");
       } else if (tudoCerto && !emailValido) {
-        mostrarMensagem("Senha válida! Informe um e-mail válido para concluir.", "sucesso");
+        mostrarMensagem("Você conseguiu! Informe um e-mail válido para concluir.", "sucesso");
       } else if (tudoCerto && emailValido) {
         mostrarMensagem("🎉 Tudo certo! Clique para concluir o desafio.", "sucesso");
-      } else if (novasRegras === 0 && !estado.mensagemTemporaria) {
+      } else if (novasRegras === 0) {
         mensagem.textContent = "";
       }
     }
-    estado.mensagemTemporaria = "";
   }
 
   function confetes() {
@@ -266,10 +221,10 @@
       const elemento = document.createElement("span");
       elemento.className = "confete";
       elemento.setAttribute("aria-hidden", "true");
-      elemento.style.left = `${Math.random() * 100}vw`;
+      elemento.style.left = (Math.random() * 100) + "vw";
       elemento.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
-      elemento.style.setProperty("--duracao", `${2 + Math.random() * 2.5}s`);
-      elemento.style.setProperty("--deslocamento", `${Math.random() * 180 - 90}px`);
+      elemento.style.setProperty("--duracao", (2 + Math.random() * 2.5) + "s");
+      elemento.style.setProperty("--deslocamento", (Math.random() * 180 - 90) + "px");
       document.body.append(elemento);
       elemento.addEventListener("animationend", () => elemento.remove(), { once: true });
     }
@@ -286,10 +241,11 @@
     if (estado.vitoria || estado.esgotado) return;
     estado.vitoria = true;
     pararCronometro();
-    pararEmbaralhamento();
     bloquearControles();
     cartao.classList.add("vitoria");
-    mostrarMensagem(`🏆 Parabéns! Você venceu com ${estado.tempoRestante} segundo${estado.tempoRestante === 1 ? "" : "s"} restante${estado.tempoRestante === 1 ? "" : "s"}!`, "sucesso");
+    mostrarMensagem("🏆 Parabéns! Você venceu com " + estado.tempoRestante + " segundo" +
+      (estado.tempoRestante === 1 ? "" : "s") + " restante" +
+      (estado.tempoRestante === 1 ? "" : "s") + "!", "sucesso");
     confetes();
   }
 
@@ -298,26 +254,22 @@
     estado.tempoRestante = 0;
     estado.esgotado = true;
     pararCronometro();
-    pararEmbaralhamento();
     bloquearControles();
     cartao.classList.add("derrota");
     tempoEl.textContent = "0";
     mostrarMensagem("⏰ O tempo acabou! Você pode tentar novamente.", "erro");
-
   }
 
   function reiniciar() {
     pararCronometro();
-    pararEmbaralhamento();
     estado.tempoRestante = CONFIG.duracaoInicial;
     estado.prazoFinal = null;
     estado.iniciado = false;
     estado.vitoria = false;
     estado.esgotado = false;
-    estado.mensagemTemporaria = "";
+    estado.regraAtualId = null;
     estado.regrasPremiadas = new Set();
     estado.estadosAnteriores = new Map();
-    estado.ordemRegras = [];
 
     email.value = "";
     senha.value = "";
@@ -331,9 +283,9 @@
     tempoEl.textContent = String(CONFIG.duracaoInicial);
     cronometro.classList.remove("urgente");
     cartao.classList.remove("vitoria", "derrota");
-    shuffleStatus.textContent = "Ordem dinâmica";
     document.querySelectorAll(".confete").forEach(el => el.remove());
     mensagem.textContent = "";
+    escolherRegraSurpresa(obterRegras(""));
     atualizarInterface();
     email.focus();
   }
@@ -365,8 +317,7 @@
       email.reportValidity();
       return;
     }
-    const regras = obterRegras(senha.value);
-    if (regras.every(regra => regra.ok)) {
+    if (obterRegras(senha.value).every(regra => regra.ok)) {
       atualizarRelogio();
       if (!estado.esgotado) vencer();
     } else {
@@ -374,8 +325,6 @@
     }
   });
 
-  // Inicialização: a contagem de regras vem da própria função de validação.
-  const totalRegras = obterRegras("").length;
-  trilho.setAttribute("aria-valuemax", String(totalRegras));
+  escolherRegraSurpresa(obterRegras(""));
   atualizarInterface();
 })();
