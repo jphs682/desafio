@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Cumpra as 16 regras antes que o tempo acabe.">
+  <meta name="description" content="Crie sua conta e escolha uma senha segura.">
   <meta name="theme-color" content="#0b1020">
   <title>Desafio da Senha 🔐</title>
   <link rel="stylesheet" href="style.css">
@@ -12,12 +12,13 @@
 <body>
   <main class="page">
     <section class="card" id="cartao" aria-labelledby="titulo">
-      <p class="eyebrow">UM DESAFIO DE LÓGICA</p>
-      <h1 id="titulo">🔐 Desafio da Senha</h1>
-      <p class="intro">Uma regra surpresa por vez! Cumpra a regra atual para descobrir a próxima.</p>
+      <div class="brand-mark" aria-hidden="true">◆</div>
+      <p class="eyebrow">BEM-VINDO</p>
+      <h1 id="titulo">Crie sua conta</h1>
+      <p class="intro">Preencha seus dados para começar. Escolha uma senha que atenda aos requisitos de segurança.</p>
 
       <div class="timer" id="cronometro" aria-live="off">
-        <span>⏱️ Tempo restante</span>
+        <span>Tempo para concluir o cadastro</span>
         <strong><span id="tempo">60</span>s</strong>
       </div>
 
@@ -25,35 +26,35 @@
         <label for="email">E-mail</label>
         <input id="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
 
-        <label for="senha">Senha-desafio</label>
+        <label for="senha">Crie uma senha</label>
         <div class="password-row">
           <input id="senha" type="password" inputmode="text" autocomplete="off"
             autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"
-            placeholder="Crie uma senha impossível..." aria-label="Senha-desafio" required>
+            placeholder="Digite uma senha segura" aria-label="Senha-desafio" required>
           <button class="toggle" id="toggle-senha" type="button" aria-label="Mostrar senha" aria-controls="senha" aria-pressed="false">Mostrar</button>
         </div>
 
         <div class="stats">
-          <span id="contador-caracteres">0 caracteres visuais</span>
+          <span id="contador-caracteres" class="sr-only">0 caracteres visuais</span>
         </div>
 
         <section class="rules-panel" aria-labelledby="missao">
           <div class="rules-heading">
-            <h2 id="missao">Sua missão</h2>
-            <span class="shuffle-status" id="shuffle-status">Regra surpresa</span>
+            <h2 id="missao">Requisitos da senha</h2>
+            <span class="shuffle-status" id="shuffle-status">Verificação</span>
           </div>
-          <p class="rules-hint">A cada etapa, uma nova regra aparece. Você só descobre a próxima quando cumprir a atual.</p>
+          <p class="rules-hint">Atenda ao requisito exibido para revelar o próximo.</p>
           <ol id="lista-regras">
             <li>Uma regra surpresa será revelada...</li>
           </ol>
         </section>
 
         <p id="mensagem" class="message" role="status" aria-live="polite"></p>
-        <button class="submit" id="entrar" type="submit" disabled>Vencer o desafio</button>
-        <button class="secondary" id="reiniciar" type="button">Reiniciar desafio</button>
+        <button class="submit" id="entrar" type="submit" disabled>Criar conta</button>
+        <button class="secondary" id="reiniciar" type="button">Limpar formulário</button>
       </form>
 
-      <p class="footnote">É um jogo demonstrativo: não use sua senha real nem dados pessoais. O e-mail não é enviado a nenhum servidor.</p>
+      <p class="footnote">Demonstração de cadastro. Seus dados não são enviados nem armazenados em um servidor.</p>
     </section>
   </main>
 </body>
