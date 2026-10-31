@@ -147,8 +147,10 @@
     const status = document.createElement("span");
     status.className = "rule-state";
     status.setAttribute("aria-hidden", "true");
-    status.textContent = "✦";
-    item.append(status, document.createTextNode(regra.nome));
+    status.textContent = "•";
+    const texto = document.createElement("strong");
+    texto.textContent = regra.nome;
+    item.append(status, texto);
     lista.append(item);
   }
 
@@ -294,12 +296,16 @@
 
   botaoReiniciar.addEventListener("click", reiniciar);
 
-  toggle.addEventListener("click", () => {
-    const mostrar = senha.type === "password";
-    senha.type = mostrar ? "text" : "password";
+  toggle.addEventListener("click", evento => {
+    evento.preventDefault();
+    const mostrar = senha.getAttribute("type") === "password";
+    senha.setAttribute("type", mostrar ? "text" : "password");
     toggle.textContent = mostrar ? "Ocultar" : "Mostrar";
     toggle.setAttribute("aria-label", mostrar ? "Ocultar senha" : "Mostrar senha");
-    toggle.setAttribute("aria-pressed", String(mostrar));
+    toggle.setAttribute("aria-pressed", mostrar ? "true" : "false");
+    senha.focus();
+    const tamanho = senha.value.length;
+    try { senha.setSelectionRange(tamanho, tamanho); } catch (_) { /* Campo pode não suportar seleção. */ }
   });
 
   senha.addEventListener("focus", iniciar);
