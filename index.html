@@ -27,10 +27,10 @@
 
         <label for="senha">Senha-desafio</label>
         <div class="password-row">
-          <input id="senha" class="senha-oculta" type="text" inputmode="text" autocomplete="off"
+          <input id="senha" type="password" inputmode="text" autocomplete="off"
             autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"
             placeholder="Crie uma senha impossível..." aria-label="Senha-desafio" required>
-          <button class="toggle" id="toggle-senha" type="button" aria-label="Mostrar senha" aria-controls="senha">Mostrar</button>
+          <button class="toggle" id="toggle-senha" type="button" aria-label="Mostrar senha" aria-controls="senha" aria-pressed="false">Mostrar</button>
         </div>
 
         <div class="stats">
@@ -55,6 +55,7 @@
 
         <p id="mensagem" class="message" role="status" aria-live="polite"></p>
         <button class="submit" id="entrar" type="submit" disabled>Vencer o desafio</button>
+        <button class="secondary" id="reiniciar" type="button">Reiniciar desafio</button>
       </form>
 
       <p class="footnote">É um jogo demonstrativo: não use sua senha real nem dados pessoais. O e-mail não é enviado a nenhum servidor.</p>
