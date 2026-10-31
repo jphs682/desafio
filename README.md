@@ -1,6 +1,6 @@
 # 🔐 Desafio da Senha
 
-Um jogo de lógica e validação de senhas: cumpra 16 regras antes que o cronômetro termine!
+Um jogo de lógica e validação de senhas: descubra regras surpresa e cumpra todas antes que o cronômetro termine!
 
 ## 🌐 Acesse o jogo
 
@@ -8,13 +8,13 @@ Um jogo de lógica e validação de senhas: cumpra 16 regras antes que o cronôm
 
 ## Funcionalidades
 
-- 16 regras validadas em tempo real
+- Regras surpresa reveladas uma de cada vez, em ordem aleatória
 - Cronômetro de 60 segundos, iniciado ao focar o campo da senha
 - Bônus de tempo ao cumprir cada regra pela primeira vez
-- Regras embaralhadas a cada 12 segundos
+- A próxima regra só aparece quando a regra atual é cumprida
 - Contagem de caracteres visuais, incluindo emojis e bandeiras
 - Colagem de texto e emojis permitida
-- Barra de progresso e destaque da próxima regra pendente
+- Destaque visual da regra atual
 - Mostrar e ocultar senha usando o campo de senha nativo do navegador
 - Confetes ao vencer
 - Reiniciar a partida a qualquer momento, inclusive após vitória ou derrota
