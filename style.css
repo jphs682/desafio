@@ -56,9 +56,15 @@ input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px #22d3ee1c; }
 .password-row { display: flex; gap: 8px; }
 .password-row input { flex: 1; }
 .toggle {
-  min-width: 76px; border: 1px solid var(--border); border-radius: 10px; padding: 0 13px;
-  color: var(--text); background: #222b43; font-size: .82rem; cursor: pointer;
+  appearance: none; -webkit-appearance: none; display: inline-flex; flex: 0 0 82px;
+  align-items: center; justify-content: center; min-height: 48px; min-width: 82px;
+  border: 1px solid #485675; border-radius: 10px; padding: 0 13px;
+  color: var(--text); background: #283451; font-size: .82rem; font-weight: 700;
+  cursor: pointer; transition: background .15s, border-color .15s;
 }
+.toggle:hover:not(:disabled) { background: #354365; border-color: var(--cyan); }
+#senha[type="text"] { -webkit-text-security: none !important; }
+#senha[type="password"] { -webkit-text-security: disc; }
 .stats { display: none; }
 .rules-panel {
   margin-top: 19px; padding: 15px; border: 1px solid var(--border);
@@ -81,13 +87,14 @@ input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px #22d3ee1c; }
   transition: transform .15s, opacity .15s;
 }
 .submit:not(:disabled):hover, .secondary:hover { transform: translateY(-1px); }
-.secondary {
-  width: 100%; min-height: 42px; margin-top: 9px; padding: 10px 18px;
-  border: 1px solid var(--border); border-radius: 10px; color: var(--muted);
-  font-size: .82rem; font-weight: 600; background: transparent; cursor: pointer;
-  transition: transform .15s, border-color .15s;
+.secondary, button.clear-button {
+  appearance: none; -webkit-appearance: none; display: flex; align-items: center;
+  justify-content: center; width: 100%; min-height: 44px; margin-top: 10px; padding: 11px 18px;
+  border: 1px solid #485675; border-radius: 10px; color: #c5cde0;
+  font-size: .84rem; font-weight: 700; line-height: 1.2; background: #202b43;
+  cursor: pointer; transition: transform .15s, border-color .15s, background .15s;
 }
-.secondary:hover { border-color: var(--cyan); color: var(--text); }
+.secondary:hover, button.clear-button:hover { border-color: var(--cyan); color: var(--text); background: #283653; }
 button:disabled { cursor: not-allowed; opacity: .45; }
 .footnote { margin: 17px 0 0; text-align: center; color: var(--muted); font-size: .7rem; line-height: 1.5; }
 .sr-only {
@@ -105,7 +112,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
   h1 { font-size: 1.8rem; }
   .timer { padding: 10px 11px; }
   .password-row input { width: 0; flex: 1 1 0; }
-  .password-row .toggle { min-height: 46px; }
+  .password-row .toggle { min-height: 46px; flex-basis: 82px; }
   input, button { min-height: 44px; }
 }
 @media (max-width: 360px) {
