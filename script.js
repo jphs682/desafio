@@ -24,6 +24,7 @@
   const senha = $("senha");
   const toggle = $("toggle-senha");
   const entrar = $("entrar");
+  const botaoReiniciar = $("reiniciar");
   const lista = $("lista-regras");
   const contador = $("contador");
   const contadorChars = $("contador-caracteres");
@@ -303,15 +304,6 @@
     tempoEl.textContent = "0";
     mostrarMensagem("⏰ O tempo acabou! Você pode tentar novamente.", "erro");
 
-    if (!$("reiniciar")) {
-      const botao = document.createElement("button");
-      botao.type = "button";
-      botao.id = "reiniciar";
-      botao.className = "submit";
-      botao.textContent = "Tentar novamente";
-      botao.addEventListener("click", reiniciar);
-      entrar.after(botao);
-    }
   }
 
   function reiniciar() {
@@ -332,25 +324,28 @@
     email.disabled = false;
     senha.disabled = false;
     toggle.disabled = false;
-    senha.classList.add("senha-oculta");
+    senha.type = "password";
     toggle.textContent = "Mostrar";
     toggle.setAttribute("aria-label", "Mostrar senha");
+    toggle.setAttribute("aria-pressed", "false");
     tempoEl.textContent = String(CONFIG.duracaoInicial);
     cronometro.classList.remove("urgente");
     cartao.classList.remove("vitoria", "derrota");
-    $("reiniciar")?.remove();
     shuffleStatus.textContent = "Ordem dinâmica";
     document.querySelectorAll(".confete").forEach(el => el.remove());
     mensagem.textContent = "";
     atualizarInterface();
-    senha.focus();
+    email.focus();
   }
 
+  botaoReiniciar.addEventListener("click", reiniciar);
+
   toggle.addEventListener("click", () => {
-    const mostrar = senha.classList.contains("senha-oculta");
-    senha.classList.toggle("senha-oculta", !mostrar);
+    const mostrar = senha.type === "password";
+    senha.type = mostrar ? "text" : "password";
     toggle.textContent = mostrar ? "Ocultar" : "Mostrar";
     toggle.setAttribute("aria-label", mostrar ? "Ocultar senha" : "Mostrar senha");
+    toggle.setAttribute("aria-pressed", String(mostrar));
   });
 
   senha.addEventListener("focus", iniciar);
