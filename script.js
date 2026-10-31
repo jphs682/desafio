@@ -167,9 +167,11 @@
     const regrasPorId = new Map(regras.map(regra => [regra.id, regra]));
 
     let novasRegras = 0;
+    const jaExisteEstadoAnterior = estado.estadosAnteriores.size > 0;
     for (const regra of regras) {
       const anterior = estado.estadosAnteriores.get(regra.id) || false;
-      if (regra.ok && !anterior && !estado.regrasPremiadas.has(regra.id)) {
+      // A primeira leitura só registra o estado inicial; não concede bônus.
+      if (jaExisteEstadoAnterior && regra.ok && !anterior && !estado.regrasPremiadas.has(regra.id)) {
         estado.regrasPremiadas.add(regra.id);
         novasRegras++;
       }
