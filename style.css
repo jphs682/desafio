@@ -51,7 +51,6 @@ input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px #22d3ee22; }
   border: 1px solid var(--border); border-radius: 11px; padding: 0 14px;
   color: var(--text); background: #222b43; cursor: pointer;
 }
-#senha.senha-oculta { -webkit-text-security: disc; }
 .stats { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 15px 0 9px; color: var(--muted); font-size: .82rem; }
 .progress-track { height: 9px; overflow: hidden; border-radius: 999px; background: #303a55; }
 .progress { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--cyan)); transition: width .2s; }
@@ -69,7 +68,13 @@ input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px #22d3ee22; }
 .rule-state { display: inline-block; min-width: 1.3em; margin-right: 5px; }
 .message { min-height: 24px; margin: 15px 0 10px; font-weight: 700; line-height: 1.5; overflow-wrap: anywhere; }
 .submit { width: 100%; padding: 14px 18px; border: 0; border-radius: 12px; color: white; font-weight: 800; background: linear-gradient(100deg, #7c3aed, #2563eb); cursor: pointer; transition: transform .15s, opacity .15s; }
-.submit:not(:disabled):hover { transform: translateY(-1px); }
+.submit:not(:disabled):hover, .secondary:hover { transform: translateY(-1px); }
+.secondary {
+  width: 100%; margin-top: 10px; padding: 12px 18px; border: 1px solid var(--border);
+  border-radius: 12px; color: var(--text); font-weight: 700; background: #222b43;
+  cursor: pointer; transition: transform .15s, border-color .15s;
+}
+.secondary:hover { border-color: var(--cyan); }
 button:disabled { cursor: not-allowed; opacity: .45; }
 .footnote { margin: 18px 0 0; text-align: center; color: var(--muted); font-size: .75rem; line-height: 1.5; }
 .card.vitoria { border-color: var(--good); box-shadow: 0 0 0 2px #34d39922, 0 24px 80px #0008; }
