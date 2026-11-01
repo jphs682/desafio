@@ -30,18 +30,23 @@
   const cronometro = $("cronometro");
   const cartao = $("cartao");
 
-  const estado = {
-    tempoRestante: CONFIG.duracaoInicial,
-    prazoFinal: null,
-    intervalo: null,
-    iniciado: false,
-    vitoria: false,
-    esgotado: false,
-    regraAtualId: null,
-    contagemAlvo: null,
-    regrasPremiadas: new Set(),
-    estadosAnteriores: new Map()
-  };
+  // Estado centralizado: cada nova tentativa recebe coleções novas.
+  function criarEstadoInicial() {
+    return {
+      tempoRestante: CONFIG.duracaoInicial,
+      prazoFinal: null,
+      intervalo: null,
+      iniciado: false,
+      vitoria: false,
+      esgotado: false,
+      regraAtualId: null,
+      contagemAlvo: null,
+      regrasPremiadas: new Set(),
+      estadosAnteriores: new Map()
+    };
+  }
+
+  const estado = criarEstadoInicial();
 
   function separarGraphemes(texto) {
     if (typeof Intl.Segmenter === "function") {
@@ -67,7 +72,8 @@
     return resultado;
   }
 
-  function obterRegras(texto) {
+  // Avaliação das regras fica isolada da interface e dos eventos do formulário.
+  function avaliarRegrasSenha(texto) {
     const chars = separarGraphemes(texto);
     const n = chars.length;
     const diaRomano = romano(new Date().getDate());
@@ -95,6 +101,29 @@
       { id: "maximo", nome: "Sua senha precisa ter menos de 40 caracteres visuais.", ok: n < 40 },
       { id: "minuscula", nome: "Inclua pelo menos uma letra minúscula (a–z).", ok: /[a-z]/.test(texto) }
     ];
+  }
+
+  function validarEmail() {
+    return email.value.trim() !== "" && email.validity.valid;
+  }
+
+  function avaliarSenha(texto) {
+    const regras = avaliarRegrasSenha(texto);
+    return {
+      regras,
+      tudoCerto: regras.every(regra => regra.ok),
+      proibido: texto.includes(CONFIG.emojiProibido)
+    };
+  }
+
+  function validarFormulario() {
+    const senhaAvaliada = avaliarSenha(senha.value);
+    return {
+      ...senhaAvaliada,
+      emailValido: validarEmail(),
+      formularioValido: senhaAvaliada.tudoCerto &&
+        validarEmail() && !senhaAvaliada.proibido
+    };
   }
 
   function escolherRegraSurpresa(regras) {
@@ -178,7 +207,8 @@
   function atualizarInterface() {
     const texto = senha.value;
     const chars = separarGraphemes(texto);
-    const regras = obterRegras(texto);
+    const avaliacao = avaliarSenha(texto);
+    const regras = avaliacao.regras;
     const regrasPorId = new Map(regras.map(regra => [regra.id, regra]));
 
     let novasRegras = 0;
@@ -200,9 +230,8 @@
       mostrarMensagem("⏱️ +" + bonus + " segundos! Boa, regra cumprida!", "sucesso");
     }
 
-    const tudoCerto = regras.every(regra => regra.ok);
-    const emailValido = email.value.trim() !== "" && email.validity.valid;
-    const proibido = texto.includes(CONFIG.emojiProibido);
+    const { tudoCerto, proibido } = avaliacao;
+    const emailValido = validarEmail();
 
     if (!tudoCerto && !estado.vitoria && !estado.esgotado) {
       const atual = regrasPorId.get(estado.regraAtualId);
@@ -281,15 +310,7 @@
 
   function reiniciar() {
     pararCronometro();
-    estado.tempoRestante = CONFIG.duracaoInicial;
-    estado.prazoFinal = null;
-    estado.iniciado = false;
-    estado.vitoria = false;
-    estado.esgotado = false;
-    estado.regraAtualId = null;
-    estado.contagemAlvo = null;
-    estado.regrasPremiadas = new Set();
-    estado.estadosAnteriores = new Map();
+    Object.assign(estado, criarEstadoInicial());
 
     email.value = "";
     senha.value = "";
@@ -305,7 +326,7 @@
     cartao.classList.remove("vitoria", "derrota");
     document.querySelectorAll(".confete").forEach(el => el.remove());
     mensagem.textContent = "";
-    escolherRegraSurpresa(obterRegras(""));
+    escolherRegraSurpresa(avaliarRegrasSenha(""));
     atualizarInterface();
     email.focus();
   }
@@ -332,16 +353,18 @@
     evento.preventDefault();
     if (estado.vitoria || estado.esgotado) return;
 
-    if (senha.value.includes(CONFIG.emojiProibido)) {
+    const validacao = validarFormulario();
+
+    if (validacao.proibido) {
       mostrarMensagem("Não pode ter o dedo do meio, seu sem educação.", "erro");
       entrar.disabled = true;
       return;
     }
-    if (!email.value.trim() || !email.validity.valid) {
+    if (!validacao.emailValido) {
       email.reportValidity();
       return;
     }
-    if (obterRegras(senha.value).every(regra => regra.ok)) {
+    if (validacao.tudoCerto) {
       atualizarRelogio();
       if (!estado.esgotado) vencer();
     } else {
@@ -349,6 +372,6 @@
     }
   });
 
-  escolherRegraSurpresa(obterRegras(""));
+  escolherRegraSurpresa(avaliarRegrasSenha(""));
   atualizarInterface();
 })();
