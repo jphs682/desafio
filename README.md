@@ -20,9 +20,17 @@ Um jogo de lógica e validação de senhas: descubra regras surpresa e cumpra to
 - Reiniciar a partida a qualquer momento, inclusive após vitória ou derrota
 - Layout responsivo e suporte à preferência por movimento reduzido
 
+## Testes automatizados
+
+Os testes verificam o motor de regras, incluindo validações de senha, emojis, bandeiras, algarismos romanos e contagem de caracteres visuais.
+
+- Requisito: Node.js 20 ou superior.
+- Executar localmente: `npm test`.
+- Os testes também são executados automaticamente pelo GitHub Actions a cada envio para `main` e em pull requests.
+
 ## Tecnologias
 
-HTML5, CSS3 e JavaScript puro. Nenhuma dependência de build ou serviço de backend.
+HTML5, CSS3 e JavaScript puro no navegador. Node.js é usado apenas para executar os testes. Nenhum serviço de backend é necessário.
 
 ## Executar localmente
 
