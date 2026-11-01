@@ -1,0 +1,9 @@
+{
+  "name": "desafio-da-senha",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes automatizados do motor de regras do Desafio da Senha",
+  "scripts": {
+    "test": "node --test"
+  }
+}
