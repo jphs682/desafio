@@ -38,6 +38,7 @@
     vitoria: false,
     esgotado: false,
     regraAtualId: null,
+    contagemAlvo: null,
     regrasPremiadas: new Set(),
     estadosAnteriores: new Map()
   };
@@ -85,7 +86,12 @@
       { id: "bandeira", nome: "A bandeira 🇳🇱 precisa começar na quinta posição visual.", ok: chars[4] === CONFIG.bandeira },
       { id: "codigo", nome: "Inclua o código telefônico do Brasil: " + CONFIG.codigoTelefonico + ".", ok: texto.includes(CONFIG.codigoTelefonico) },
       { id: "feitico", nome: "Inclua um feitiço conhecido de Harry Potter.", ok: CONFIG.feiticos.some(f => lower.includes(f.toLocaleLowerCase("pt-BR"))) },
-      { id: "contagem", nome: "A quantidade atual de caracteres visuais (" + n + ") precisa aparecer na senha.", ok: texto.includes(String(n)) },
+      {
+        id: "contagem",
+        nome: "O número de caracteres visuais definido nesta etapa (" +
+          (estado.contagemAlvo ?? n) + ") precisa aparecer na senha.",
+        ok: texto.includes(String(estado.contagemAlvo ?? n))
+      },
       { id: "maximo", nome: "Sua senha precisa ter menos de 40 caracteres visuais.", ok: n < 40 },
       { id: "minuscula", nome: "Inclua pelo menos uma letra minúscula (a–z).", ok: /[a-z]/.test(texto) }
     ];
@@ -99,7 +105,14 @@
     }
     let candidatas = pendentes.filter(regra => regra.id !== estado.regraAtualId);
     if (candidatas.length === 0) candidatas = pendentes;
-    estado.regraAtualId = candidatas[Math.floor(Math.random() * candidatas.length)].id;
+    const escolhida = candidatas[Math.floor(Math.random() * candidatas.length)];
+    estado.regraAtualId = escolhida.id;
+
+    // A contagem é congelada quando a regra é revelada, evitando que o alvo
+    // mude a cada caractere digitado.
+    estado.contagemAlvo = escolhida.id === "contagem"
+      ? separarGraphemes(senha.value).length
+      : null;
   }
 
   function pararCronometro() {
@@ -173,7 +186,8 @@
     for (const regra of regras) {
       const anterior = estado.estadosAnteriores.get(regra.id) || false;
       // A primeira leitura só registra o estado inicial; não concede bônus.
-      if (jaExisteEstadoAnterior && regra.ok && !anterior && !estado.regrasPremiadas.has(regra.id)) {
+      if (jaExisteEstadoAnterior && regra.id === estado.regraAtualId &&
+          regra.ok && !anterior && !estado.regrasPremiadas.has(regra.id)) {
         estado.regrasPremiadas.add(regra.id);
         novasRegras++;
       }
@@ -219,7 +233,8 @@
   }
 
   function confetes() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const cores = ["#8b5cf6", "#22d3ee", "#34d399", "#fbbf24", "#fb7185"];
     for (let i = 0; i < 70; i++) {
       const elemento = document.createElement("span");
@@ -272,6 +287,7 @@
     estado.vitoria = false;
     estado.esgotado = false;
     estado.regraAtualId = null;
+    estado.contagemAlvo = null;
     estado.regrasPremiadas = new Set();
     estado.estadosAnteriores = new Map();
 
