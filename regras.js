@@ -57,9 +57,9 @@
 
     return [
       { id: "minimo", nome: "Sua senha precisa ter pelo menos 5 caracteres visuais.", ok: quantidade >= 5 },
-      { id: "numero", nome: "Inclua pelo menos um número (0–9).", ok: /\\d/.test(texto) },
+      { id: "numero", nome: "Inclua pelo menos um número (0–9).", ok: /\d/.test(texto) },
       { id: "maiuscula", nome: "Inclua uma letra maiúscula (A–Z).", ok: /[A-Z]/.test(texto) },
-      { id: "emoji", nome: "Surpresa: sua senha precisa conter um emoji.", ok: /\\p{Extended_Pictographic}/u.test(texto) },
+      { id: "emoji", nome: "Surpresa: sua senha precisa conter um emoji.", ok: /\p{Extended_Pictographic}/u.test(texto) },
       { id: "romano", nome: "Inclua o dia de hoje em algarismos romanos (" + diaRomano + ").", ok: texto.includes(diaRomano) },
       { id: "pi", nome: "Os primeiros dígitos de PI precisam aparecer: 3.14.", ok: texto.includes(CONFIG.pi) },
       { id: "apontar", nome: "Adicione o emoji que aponta para cima: ☝️.", ok: texto.includes(CONFIG.emojiObrigatorio) },
